@@ -1,0 +1,19 @@
+users (collection)
+ └── userId
+      ├── name
+      ├── email
+      └── avatar
+
+posts (collection)
+ └── postId
+      ├── title
+      ├── content
+      ├── imageUrl
+      ├── authorId
+      ├── createdAt
+      ├── likes (array of userIds)
+      └── comments (subcollection)
+            └── commentId
+                  ├── userId
+                  ├── text
+                  └── createdAt
