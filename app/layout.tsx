@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     title: "Postify | شارك أفكارك ومقالاتك بحرية",
     description:
       "انضم إلى Postify وابدأ بمشاركة أفكارك ومنشوراتك بطريقة سهلة وسريعة.",
-    url: "https://postify.vercel.app/",
+    url: "https://postify-mu-blush.vercel.app/",
     siteName: "Postify",
     locale: "ar_EG",
     type: "website",
@@ -52,9 +52,9 @@ export const metadata: Metadata = {
     images: ["/icon.png"],
     creator: "@mostafa_hamdi",
   },
-  metadataBase: new URL("https://postify.vercel.app"),
+  metadataBase: new URL("https://postify-mu-blush.vercel.app/"),
   alternates: {
-    canonical: "https://postify.vercel.app",
+    canonical: "https://postify-mu-blush.vercel.app/",
   },
 };
 

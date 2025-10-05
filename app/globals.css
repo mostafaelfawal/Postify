@@ -1,1 +1,15 @@
 @import "tailwindcss";
+
+@theme {
+  --color-primary: #8b5cf6; /* Purple */
+  --color-primary-dark: #6d28d9; /* Deep Purple */
+  --color-secondary: #f9a8d4; /* Light Pink */
+  --color-secondary-dark: #ec4899; /* Hot Pink */
+  --color-bg: #fff7fc; /* Soft Background */
+  --color-darkly: #1e1e1e; /* Dark Text */
+  --color-lightly: #7f7f7f; /* Light Text */
+}
+
+button {
+    cursor: pointer;
+}
