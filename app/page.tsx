@@ -2,20 +2,22 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { auth } from "./firebase";
-import HomePage from "./home/page";
+import { useAuthState } from "react-firebase-hooks/auth";
+import Loading from "./loading";
 
 export default function Home() {
   const router = useRouter();
+  const [user, loading] = useAuthState(auth);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (!user) {
-        router.push("/login");
+    if (!loading) {
+      if (user) {
+        router.push("/home"); // لو مسجّل دخول
+      } else {
+        router.push("/login"); // لو مش مسجّل دخول
       }
-    });
+    }
+  }, [user, loading, router]);
 
-    return () => unsubscribe();
-  }, [router]);
-
-  return <HomePage />;
+  return <Loading />;
 }
