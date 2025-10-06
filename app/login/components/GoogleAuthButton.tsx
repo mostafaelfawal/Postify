@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/app/firebase";
 import { FirebaseError } from "firebase/app";
-import { UserToFirebase } from "../utils/userToFirebase";
+import UserToFirebase from "../utils/userToFirebase";
 
 export default function GoogleAuthButton({ inLogin }: { inLogin: boolean }) {
   async function handleGoogleLogin() {
