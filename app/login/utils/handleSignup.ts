@@ -20,6 +20,11 @@ export default async function handleSignup(
     );
     const user = userCredential.user;
     await updateProfile(user, { displayName: entry.name?.trim() });
+    toast.success(
+      `👋 مرحبًا بعودتك، ${
+        userCredential.user.displayName || "posti-User"
+      }! سعيدون برؤيتك مجددًا على Postify.`
+    );
     UserToFirebase(user, router);
   } catch (error) {
     if (error instanceof FirebaseError) {
