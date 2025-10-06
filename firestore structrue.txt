@@ -2,23 +2,23 @@ Postify structure in firestore
 
 users (collection)
  └── userId
-      ├── name
-      ├── email
-      └── avatar
+     ├── name
+     ├── email
+     └── avatar
 
 posts (collection)
  └── postId
-      ├── content
-      ├── imageUrl?
-      ├── authorId
-      ├── createdAt
-      └── likes [array of userId]
+     ├── content
+     ├── imageUrl?
+     ├── authorId
+     ├── createdAt
+     └── likes [array of userId]
 
 comments (collection)
  └── commentId
-      ├── postId
-      ├── userId
-      ├── parentId? لو رد على تعليق اخر
-      ├── content
-      ├── createdAt
-      └── likes [array of userId]
+     ├── postId
+     ├── userId
+     ├── parentId? لو رد على تعليق اخر
+     ├── content
+     ├── createdAt
+     └── likes [array of userId]

@@ -24,6 +24,7 @@ export default function AuthForm({
   setInLogin: (v: boolean) => void;
 }) {
   const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const [entry, setEntry] = useState<EntryType>({
     email: "",
@@ -36,12 +37,17 @@ export default function AuthForm({
     name: "",
   });
 
-  const handleClickSignLogIn = (e: React.FormEvent) => {
+  const handleClickSignLogIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (inLogin) {
-      handleLogin(router, { inLogin, entry, setErrors });
-    } else {
-      handleSignup(entry, router);
+    setLoading(true);
+    try {
+      if (inLogin) {
+        await handleLogin(router, { inLogin, entry, setErrors });
+      } else {
+        await handleSignup({ inLogin, entry, setErrors }, router);
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -60,10 +66,19 @@ export default function AuthForm({
           >
             <EmailPassword entry={entry} setEntry={setEntry} errors={errors} />
             <button
+              disabled={loading}
               onClick={(e) => handleClickSignLogIn(e)}
-              className="mt-2 p-3 bg-main rounded-lg hover:bg-main-dark duration-200 text-white font-semibold"
+              className="disabled:bg-main-dark flex justify-center items-center mt-2 p-3 bg-main rounded-lg hover:bg-main-dark duration-200 text-white font-semibold"
             >
-              تسجيل الدخول
+              {loading ? (
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="size-6 rounded-full border-3 border-bg border-b-transparent animate-spin"
+                ></motion.span>
+              ) : (
+                "تسجيل الدخول"
+              )}
             </button>
           </motion.form>
         ) : (
@@ -87,19 +102,36 @@ export default function AuthForm({
             </div>
 
             <EmailPassword entry={entry} setEntry={setEntry} errors={errors} />
-
             <button
+              disabled={loading}
               onClick={(e) => handleClickSignLogIn(e)}
-              className="mt-2 p-3 bg-main rounded-lg hover:bg-main-dark duration-200 text-white font-semibold"
+              className="disabled:bg-main-dark flex justify-center items-center mt-2 p-3 bg-main rounded-lg hover:bg-main-dark duration-200 text-white font-semibold"
             >
-              إنشاء حساب
+              {loading ? (
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="size-6 rounded-full border-3 border-bg border-b-transparent animate-spin"
+                ></motion.span>
+              ) : (
+                "إنشاء حساب"
+              )}
             </button>
           </motion.form>
         )}
       </AnimatePresence>
-      <SwitchAuthButtons inLogin={inLogin} setInLogin={setInLogin} />
+      <SwitchAuthButtons
+        email={entry.email}
+        inLogin={inLogin}
+        setInLogin={setInLogin}
+      />
       <OR />
-      <GoogleAuthButton inLogin={inLogin} />
+      <GoogleAuthButton
+        inLogin={inLogin}
+        router={router}
+        loading={loading}
+        setLoading={setLoading}
+      />
     </div>
   );
 }
