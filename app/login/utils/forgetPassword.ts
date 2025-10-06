@@ -3,13 +3,8 @@ import { sendPasswordResetEmail } from "firebase/auth";
 import toast from "react-hot-toast";
 
 export default async function forgetPassword(email: string) {
-  const actionCodeSettings = {
-    url: "https://postify-lyart.vercel.app/login",
-    handleCodeInApp: false,
-  };
-
   try {
-    await sendPasswordResetEmail(auth, email, actionCodeSettings);
+    await sendPasswordResetEmail(auth, email);
     toast.success(
       "📩 تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني."
     );
