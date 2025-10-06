@@ -25,7 +25,7 @@ export default async function handleLogin(
       }! سعيدون برؤيتك مجددًا على Postify.`
     );
 
-    setTimeout(() => router.push("/home"), 800);
+    router.replace("/home")
   } catch (error) {
     if (error instanceof FirebaseError) {
       if (error.code === "auth/invalid-credential") {

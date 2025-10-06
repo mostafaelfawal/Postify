@@ -56,6 +56,11 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://postify-mu-blush.vercel.app/",
   },
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/icon.png",
+  },
 };
 
 export default function RootLayout({

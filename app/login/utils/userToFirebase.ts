@@ -15,7 +15,7 @@ export default async function UserToFirebase(user: User, router: AppRouterInstan
     });
 
     // بعد الحفظ بنجاح
-    setTimeout(() => router.push("./home"), 800);
+    router.replace("./home")
   } catch (error) {
     console.error("Error adding user:", error);
   }
