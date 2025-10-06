@@ -6,10 +6,10 @@ import { FirebaseError } from "firebase/app";
 import handleErrors from "./handleErrors";
 import { handlesParams } from "../types";
 import toast from "react-hot-toast";
-import { NextRouter } from "next/router";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export default async function handleLogin(
-  router: NextRouter,
+  router: AppRouterInstance,
   { inLogin, entry, setErrors }: handlesParams
 ) {
   if (!handleErrors({ inLogin, entry, setErrors })) return; // خطأ في الحقول

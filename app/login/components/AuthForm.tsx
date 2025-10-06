@@ -2,7 +2,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 // Hooks
 import { useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 // Components
 import EmailPassword from "./EmailPassword";
 import SwitchAuthButtons from "./SwitchAuthButtons";
@@ -41,7 +41,7 @@ export default function AuthForm({
     if (inLogin) {
       handleLogin(router, { inLogin, entry, setErrors });
     } else {
-      handleSignup(entry);
+      handleSignup(entry, router);
     }
   };
 
