@@ -1,6 +1,8 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import forgetPassword from "../utils/forgetPassword";
+import toast from "react-hot-toast";
 
 export default function SwitchAuthButtons({
   inLogin,
@@ -11,6 +13,25 @@ export default function SwitchAuthButtons({
   setInLogin: (v: boolean) => void;
   email: string;
 }) {
+  const [cooldown, setCooldown] = useState(0);
+
+  // تقليل العداد كل ثانية
+  useEffect(() => {
+    if (cooldown > 0) {
+      const timer = setTimeout(() => setCooldown(cooldown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [cooldown]);
+
+  const handleForgetPassword = async () => {
+    if (!email) {
+      toast.error("من فضلك أدخل البريد الإلكتروني أولاً");
+      return;
+    }
+    await forgetPassword(email);
+    setCooldown(59);
+  };
+
   return (
     <div className="flex w-full max-w-sm justify-between text-sm mt-4">
       <button
@@ -19,13 +40,23 @@ export default function SwitchAuthButtons({
       >
         {inLogin ? "إنشاء حساب جديد" : "العودة لتسجيل الدخول"}
       </button>
+
       {inLogin && (
-        <button
-          onClick={() => forgetPassword(email)}
-          className="hover:underline text-main font-bold"
-        >
-          نسيت كلمة المرور؟
-        </button>
+        <div className="flex flex-col items-end">
+          <button
+            onClick={handleForgetPassword}
+            disabled={cooldown > 0} // يمنع الضغط أثناء فترة التهدئة
+            className={`font-bold transition-all ${
+              cooldown > 0
+                ? "text-gray-400 cursor-not-allowed"
+                : "text-main hover:underline"
+            }`}
+          >
+            {cooldown > 0
+              ? `إعادة الإرسال بعد ${cooldown} ثانية`
+              : "نسيت كلمة المرور؟"}
+          </button>
+        </div>
       )}
     </div>
   );
