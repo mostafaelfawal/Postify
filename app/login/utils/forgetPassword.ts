@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 
 export default async function forgetPassword(email: string) {
   const actionCodeSettings = {
-    url: "http://localhost:3001/login",
+    url: "https://postify-lyart.vercel.app/login",
     handleCodeInApp: false,
   };
 
