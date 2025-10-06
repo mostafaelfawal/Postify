@@ -121,7 +121,6 @@ export default function AuthForm({
         )}
       </AnimatePresence>
       <SwitchAuthButtons
-        email={entry.email}
         inLogin={inLogin}
         setInLogin={setInLogin}
       />
