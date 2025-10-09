@@ -23,13 +23,12 @@ export default function SwitchAuthButtons({
     }
   }, [cooldown]);
 
-  const handleForgetPassword = async () => {
+  const handleForgetPassword = () => {
     if (!email) {
       toast.error("من فضلك أدخل البريد الإلكتروني أولاً");
       return;
     }
-    await forgetPassword(email);
-    setCooldown(59);
+    forgetPassword(email).then(() => setCooldown(59));
   };
 
   return (
@@ -48,7 +47,7 @@ export default function SwitchAuthButtons({
             disabled={cooldown > 0} // يمنع الضغط أثناء فترة التهدئة
             className={`font-bold transition-all ${
               cooldown > 0
-                ? "text-gray-400 cursor-not-allowed"
+                ? "text-lightly cursor-default!"
                 : "text-main hover:underline"
             }`}
           >
