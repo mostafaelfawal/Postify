@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { ReactElement } from "react";
 import { IconType } from "react-icons";
-import { FaHome, FaInfo, FaPlusCircle, FaUser } from "react-icons/fa";
+import { FaHome, FaInfo, FaPills, FaPlusCircle, FaUser } from "react-icons/fa";
 
 export default function Navigation() {
   // روابط الناف بار
@@ -20,6 +20,7 @@ export default function Navigation() {
     },
     { name: "أضف منشور", icon: <FaPlusCircle />, href: "#" },
     { name: "عنّا", icon: <FaInfo />, href: "#" },
+    { name: "الأشعارات", icon: <FaPills />, href: "#" },
   ];
   return (
     <motion.nav

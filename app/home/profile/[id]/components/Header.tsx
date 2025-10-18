@@ -1,63 +1,86 @@
+"use client";
 import Image from "next/image";
 import { AiFillLike } from "react-icons/ai";
 import { FaPen } from "react-icons/fa";
+import { motion } from "framer-motion";
+import { MdArticle } from "react-icons/md";
 
 export default function Header() {
   return (
-    <header className="space-y-20 dark:bg-darkly bg-bg dark:text-bg text-darkly">
-      <div className="h-50 relative">
+    <header className="relative w-full rounded-2xl overflow-hidden shadow-sm border border-lightly/40 dark:border-darkly/30 bg-bg/80 dark:bg-darkly/40 backdrop-blur-sm mb-10">
+      {/* ===== Cover Photo ===== */}
+      <div className="relative h-56 sm:h-72 w-full">
         <Image
           src="/Userbackground.jpg"
-          alt="user paner"
+          alt="cover photo"
           fill
-          className="object-cover"
+          className="object-cover brightness-90"
         />
-        <div className="absolute -bottom-15 right-10">
-          <div className="size-30 rounded-full bg-bg dark:bg-darkly outline-5 outline-main">
-            <Image src="/icon.png" alt="Avatar" fill className="object-cover" />
+        {/* ===== Avatar ===== */}
+        <div className="absolute -bottom-14 left-1/2 -translate-x-1/2 flex flex-col items-center">
+          <div className="relative size-28 sm:size-32 rounded-full border-[4px] border-bg dark:border-gray-700 shadow-md overflow-hidden">
+            <Image
+              src="/7.png"
+              alt="avatar"
+              fill
+              className="object-cover"
+              priority
+            />
           </div>
-          <button className="gap-2 group absolute bottom-0 left-0 rounded-full dark:bg-darkly bg-bg border border-gray-400 p-2 flex justify-center items-center">
-            <FaPen />
-            <span className="hidden group-hover:block">عدّل الملف</span>
+          {/* Edit button on avatar */}
+          <button className="absolute bottom-1 right-1 p-2 rounded-full bg-bg dark:bg-darkly border border-lightly/40 dark:border-darkly/30 hover:bg-gray-200 dark:hover:bg-gray-500 transition-colors duration-200">
+            <FaPen className="text-sm" />
           </button>
         </div>
       </div>
-      <div className="px-10 space-y-3">
-        <div>
-          <div className="bg-clip-text bg-linear-to-br from-main-dark w-fit via-main to-main-light">
-            <p className="font-semibold text-3xl text-transparent">
-              مصطفى حمدي
-            </p>
-          </div>
-          <p className="text-gray-400">email@example.com</p>
+
+      {/* ===== Profile Info ===== */}
+      <div className="pt-20 pb-8 px-6 sm:px-10 text-center space-y-4">
+        {/* Name */}
+        <div className="bg-clip-text text-transparent bg-gradient-to-r from-main via-main-dark to-main-light">
+          <h1 className="font-bold text-2xl sm:text-3xl">مصطفى حمدي</h1>
         </div>
-        <div className="flex space-x-3">
-          <div className="flex items-center gap-4 p-4 rounded-xl border dark:border-main-dark border-main-light">
-            <div className="p-3 bg-main/10 rounded-full">
+        {/* Email */}
+        <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">
+          armostafa982@gmail.com
+        </p>
+
+        {/* ===== Stats ===== */}
+        <div className="flex justify-center flex-wrap gap-4 mt-4">
+          {/* Likes */}
+          <motion.div
+            whileHover={{ scale: 1.03 }}
+            transition={{ type: "spring", stiffness: 250, damping: 18 }}
+            className="flex items-center gap-3 px-5 py-3 rounded-xl border border-main-light dark:border-main-dark bg-main/5 hover:bg-main/10 transition-all cursor-default"
+          >
+            <div className="p-2.5 bg-main/15 rounded-full">
               <AiFillLike className="text-main text-xl" />
             </div>
             <div>
-              <p className="text-2xl font-bold dark:text-main/80 text-main-dark">
+              <p className="text-xl font-bold text-main-dark dark:text-main/90">
                 123
               </p>
-              <p className="text-sm text-lightly">اعجاب</p>
+              <p className="text-sm text-lightly">إعجاب</p>
             </div>
-          </div>
-          <div className="flex items-center gap-4 p-4 rounded-xl border dark:border-green-800 border-green-300">
-            <div className="p-3 bg-green-500/10 rounded-full">
-              <AiFillLike className="text-green-500 text-xl" />
+          </motion.div>
+
+          {/* Posts */}
+          <motion.div
+            whileHover={{ scale: 1.03 }}
+            transition={{ type: "spring", stiffness: 250, damping: 18 }}
+            className="flex items-center gap-3 px-5 py-3 rounded-xl border border-green-300 dark:border-green-800 bg-green-500/5 hover:bg-green-500/10 transition-all cursor-default"
+          >
+            <div className="p-2.5 bg-green-500/15 rounded-full">
+              <MdArticle className="text-green-500 text-xl" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-green-800 dark:text-green-500/80">
+              <p className="text-xl font-bold text-green-700 dark:text-green-400">
                 10
               </p>
               <p className="text-sm text-lightly">منشور</p>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
-      <div className="flex justify-center items-center border-5 rounded-xl h-30 border-green-500">
-        <p>مكون المنشور</p>
       </div>
     </header>
   );
