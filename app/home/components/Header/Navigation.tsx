@@ -1,12 +1,22 @@
+"use client";
+
+import Tooltip from "@/app/components/Tooltip";
 import { auth } from "@/app/firebase";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ReactElement } from "react";
 import { IconType } from "react-icons";
-import { FaHome, FaInfo, FaPills, FaPlusCircle, FaUser } from "react-icons/fa";
+import { FaHome, FaInfo, FaPills, FaUser } from "react-icons/fa";
 
-export default function Navigation() {
-  // روابط الناف بار
+interface NavigationProps {
+  mobile?: boolean;
+  onLinkClick?: () => void;
+}
+
+export default function Navigation({
+  mobile = false,
+  onLinkClick,
+}: NavigationProps) {
   const navLinks: {
     name: string;
     icon: ReactElement<IconType>;
@@ -18,27 +28,33 @@ export default function Navigation() {
       icon: <FaUser />,
       href: `/home/profile/${auth.currentUser?.uid}`,
     },
-    { name: "أضف منشور", icon: <FaPlusCircle />, href: "#" },
     { name: "عنّا", icon: <FaInfo />, href: "#" },
-    { name: "الأشعارات", icon: <FaPills />, href: "#" },
+    { name: "الإشعارات", icon: <FaPills />, href: "#" },
   ];
+
   return (
     <motion.nav
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="hidden md:flex items-center gap-6 text-lightly dark:text-gray-300"
+      className={`${
+        mobile
+          ? "flex flex-col items-center gap-4 py-4 text-lg"
+          : "flex items-center gap-6 text-lightly dark:text-gray-300"
+      }`}
     >
-      {navLinks.map((link, i) => {
-        return (
+      {navLinks.map((link, i) => (
+        <Tooltip key={i} message={link.name} side="bottom">
           <Link
-            key={i}
             href={link.href}
-            className="flex items-center gap-1 hover:text-main transition-colors"
+            onClick={onLinkClick}
+            className={`flex items-center gap-2 hover:text-main transition-colors ${
+              mobile && "text-gray-700 dark:text-gray-200"
+            }`}
           >
-            {link.icon} {link.name}
+            {link.icon}
           </Link>
-        );
-      })}
+        </Tooltip>
+      ))}
     </motion.nav>
   );
 }

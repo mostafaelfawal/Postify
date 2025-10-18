@@ -1,8 +1,8 @@
 "use client";
+import Tooltip from "@/app/components/Tooltip";
 import Image from "next/image";
 import { AiFillLike } from "react-icons/ai";
 import { FaPen } from "react-icons/fa";
-import { motion } from "framer-motion";
 import { MdArticle } from "react-icons/md";
 
 export default function Header() {
@@ -28,9 +28,11 @@ export default function Header() {
             />
           </div>
           {/* Edit button on avatar */}
-          <button className="absolute bottom-1 right-1 p-2 rounded-full bg-bg dark:bg-darkly border border-lightly/40 dark:border-darkly/30 hover:bg-gray-200 dark:hover:bg-gray-500 transition-colors duration-200">
-            <FaPen className="text-sm" />
-          </button>
+          <Tooltip message="تعديل الملف الشخصي" side="right">
+            <button className="absolute bottom-1 right-1 p-2 rounded-full bg-bg dark:bg-darkly border border-lightly/40 dark:border-darkly/30 hover:bg-gray-200 dark:hover:bg-gray-500 transition-colors duration-200">
+              <FaPen className="text-sm" />
+            </button>
+          </Tooltip>
         </div>
       </div>
 
@@ -48,11 +50,7 @@ export default function Header() {
         {/* ===== Stats ===== */}
         <div className="flex justify-center flex-wrap gap-4 mt-4">
           {/* Likes */}
-          <motion.div
-            whileHover={{ scale: 1.03 }}
-            transition={{ type: "spring", stiffness: 250, damping: 18 }}
-            className="flex items-center gap-3 px-5 py-3 rounded-xl border border-main-light dark:border-main-dark bg-main/5 hover:bg-main/10 transition-all cursor-default"
-          >
+          <div className="flex items-center gap-3 px-5 py-3 rounded-xl border border-main-light dark:border-main-dark bg-main/5 hover:bg-main/10 transition-colors cursor-default">
             <div className="p-2.5 bg-main/15 rounded-full">
               <AiFillLike className="text-main text-xl" />
             </div>
@@ -62,14 +60,10 @@ export default function Header() {
               </p>
               <p className="text-sm text-lightly">إعجاب</p>
             </div>
-          </motion.div>
+          </div>
 
           {/* Posts */}
-          <motion.div
-            whileHover={{ scale: 1.03 }}
-            transition={{ type: "spring", stiffness: 250, damping: 18 }}
-            className="flex items-center gap-3 px-5 py-3 rounded-xl border border-green-300 dark:border-green-800 bg-green-500/5 hover:bg-green-500/10 transition-all cursor-default"
-          >
+          <div className="flex items-center gap-3 px-5 py-3 rounded-xl border border-green-300 dark:border-green-800 bg-green-500/5 hover:bg-green-500/10 transition-colors cursor-default">
             <div className="p-2.5 bg-green-500/15 rounded-full">
               <MdArticle className="text-green-500 text-xl" />
             </div>
@@ -79,7 +73,7 @@ export default function Header() {
               </p>
               <p className="text-sm text-lightly">منشور</p>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </header>

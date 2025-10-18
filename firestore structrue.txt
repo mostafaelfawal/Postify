@@ -1,24 +1,33 @@
-Postify structure in firestore
-
-users (collection)
+users
  └── userId
      ├── name
      ├── email
-     └── avatar
+     ├── avatar
+     ├── coverImage?
+     ├── postsCount
+     ├── likesCount
+     └── createdAt
 
-posts (collection)
+posts
  └── postId
      ├── content
      ├── imageUrl?
      ├── authorId
      ├── createdAt
-     └── likes [array of userId]
+     ├── likesCount
+     ├── commentsCount
+     └── likedBy (subcollection)
+         └── userId
+             └── likedAt
 
-comments (collection)
+comments
  └── commentId
      ├── postId
      ├── userId
-     ├── parentId? لو رد على تعليق اخر
+     ├── parentId?
      ├── content
      ├── createdAt
-     └── likes [array of userId]
+     ├── likesCount
+     └── likedBy (subcollection)
+         └── userId
+             └── likedAt
