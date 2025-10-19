@@ -47,7 +47,7 @@ export default function Navigation({
           <Link
             href={link.href}
             onClick={onLinkClick}
-            className={`flex items-center gap-2 hover:text-main transition-colors ${
+            className={`flex flex-1 text-xl border-b-3 border-b-main items-center gap-2 hover:text-main transition-colors ${
               mobile && "text-gray-700 dark:text-gray-200"
             }`}
           >

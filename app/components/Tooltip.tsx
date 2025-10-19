@@ -5,7 +5,6 @@ import {
   Root,
   Provider,
   Trigger,
-  Arrow,
 } from "@radix-ui/react-tooltip";
 import { ReactNode } from "react";
 
