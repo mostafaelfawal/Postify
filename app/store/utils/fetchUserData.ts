@@ -6,7 +6,8 @@ import toast from "react-hot-toast";
 
 export const fetchUserData = createAsyncThunk<
   UserData,
-  { rejectValue: string } 
+  void,
+  { rejectValue: string }
 >("user/fetchUserData", async (_, { rejectWithValue }) => {
   try {
     const uid = auth.currentUser?.uid;
