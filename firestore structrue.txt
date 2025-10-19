@@ -15,6 +15,7 @@ posts
      ├── createdAt
      ├── likesCount
      ├── commentsCount
+     ├── sharesCount
      └── likedBy (subcollection)
          └── userId
              └── likedAt

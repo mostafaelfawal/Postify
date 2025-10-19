@@ -8,10 +8,60 @@ import Link from "next/link";
 import { useState } from "react";
 import { FiImage, FiSend } from "react-icons/fi";
 import { useSelector } from "react-redux";
+import { createPost } from "@/app/home/utils/createPost";
+import toast from "react-hot-toast";
+import { auth } from "@/app/firebase";
 
 export default function NewPost() {
   const [modal, setModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [content, setContent] = useState<string>("");
   const user = useSelector((state: RootState) => state.user);
+
+  // اختيار صورة
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
+  };
+
+  // إزالة الصورة
+  const removeImage = () => {
+    setSelectedImage(null);
+    setPreviewUrl(null);
+  };
+
+  const handlePost = async () => {
+    try {
+      if (!content.trim() && !previewUrl) {
+        toast.error("المنشور فارغ!");
+        return;
+      }
+
+      toast.loading("جاري النشر...");
+
+      const newPostId = await createPost({
+        content,
+        authorId: auth.currentUser?.uid,
+        imageFile: selectedImage,
+      });
+
+      toast.dismiss();
+      toast.success("تم النشر بنجاح 🎉");
+
+      console.log("تم إنشاء المنشور:", newPostId);
+      setContent("");
+      removeImage();
+      setModal(false);
+    } catch (err) {
+      console.error(err);
+      toast.dismiss();
+      toast.error("حدث خطأ أثناء النشر 😞");
+    }
+  };
 
   return (
     <section className="min-h-screen bg-gray-50 dark:bg-[#0d0d0d] py-8 px-4 transition-colors duration-300">
@@ -37,7 +87,7 @@ export default function NewPost() {
         </Tooltip>
 
         {/* زر فتح المودال */}
-        <Tooltip message="انشأ منشور">
+        <Tooltip message="أنشئ منشور">
           <button
             onClick={() => setModal(true)}
             className="text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 w-full rounded-full text-right p-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
@@ -56,7 +106,6 @@ export default function NewPost() {
             isOpen={modal}
             closeModal={() => setModal(false)}
           >
-            {/* المحتوى */}
             <div className="p-6 space-y-6">
               {/* مربع النص */}
               <motion.textarea
@@ -64,43 +113,54 @@ export default function NewPost() {
                 animate={{ scale: 1 }}
                 transition={{ duration: 0.3 }}
                 placeholder="ما الذي تريد مشاركته اليوم؟"
-                rows={6}
+                rows={previewUrl ? 1 : 6}
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none transition-all duration-200 text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500"
               />
 
-              {/* مكان الصورة */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-8 bg-gray-50 dark:bg-gray-800 transition-all duration-300"
+              {/* عرض الصورة المختارة */}
+              {previewUrl && (
+                <div className="relative mt-4 max-h-64 rounded-lg overflow-hidden border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800">
+                  <div className="relative w-full h-64">
+                    <Image
+                      src={previewUrl}
+                      alt="Preview"
+                      fill
+                      className="object-cover rounded-lg"
+                    />
+                  </div>
+                  <button
+                    onClick={removeImage}
+                    className="absolute top-2 left-2 bg-red-500 dark:bg-red-600 text-white w-6 h-6 flex items-center justify-center rounded-full text-sm hover:bg-red-600 dark:hover:bg-red-700 transition-colors"
+                  >
+                    ×
+                  </button>
+                </div>
+              )}
+
+              {/* زر اختيار الصورة */}
+              <label className="flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+                <FiImage className="w-5 h-5" />
+                {previewUrl ? "تغيير الصورة" : "إضافة صورة"}
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleImageChange}
+                />
+              </label>
+
+              {/* زر النشر */}
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => handlePost}
+                className="flex items-center gap-2 px-6 py-2 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 font-medium shadow-sm mt-4"
               >
-                <p className="text-gray-400 dark:text-gray-500">
-                  سيظهر معاينة الصورة هنا
-                </p>
-              </motion.div>
-
-              {/* الأزرار */}
-              <div className="flex justify-between items-center pt-4">
-                {/* زر إضافة صورة */}
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex items-center gap-2 px-4 py-2 text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
-                >
-                  <FiImage className="w-5 h-5" />
-                  إضافة صورة
-                </motion.button>
-
-                {/* زر النشر */}
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex items-center gap-2 px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 font-medium shadow-sm"
-                >
-                  <FiSend className="w-4 h-4" />
-                  نشر
-                </motion.button>
-              </div>
+                <FiSend className="w-4 h-4" />
+                نشر
+              </motion.button>
             </div>
           </Modal>
         )}
