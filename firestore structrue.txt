@@ -5,8 +5,7 @@ users
      ├── avatar
      ├── coverImage?
      ├── postsCount
-     ├── likesCount
-     └── createdAt
+     └── likesCount
 
 posts
  └── postId

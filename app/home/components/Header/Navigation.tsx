@@ -1,12 +1,9 @@
 "use client";
-
 import Tooltip from "@/app/components/Tooltip";
-import { auth } from "@/app/firebase";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ReactElement } from "react";
-import { IconType } from "react-icons";
-import { FaHome, FaInfo, FaPills, FaUser } from "react-icons/fa";
+import { usePathname } from "next/navigation";
+import { FaBell, FaHome, FaInfo, FaUser } from "react-icons/fa";
 
 interface NavigationProps {
   mobile?: boolean;
@@ -17,44 +14,54 @@ export default function Navigation({
   mobile = false,
   onLinkClick,
 }: NavigationProps) {
-  const navLinks: {
-    name: string;
-    icon: ReactElement<IconType>;
-    href: string;
-  }[] = [
+  const pathname = usePathname();
+
+  const navLinks = [
     { name: "الرئيسية", icon: <FaHome />, href: "/home" },
     {
       name: "أنا",
       icon: <FaUser />,
-      href: `/home/profile/${auth.currentUser?.uid}`,
+      href: `/home/profile`,
     },
-    { name: "عنّا", icon: <FaInfo />, href: "#" },
-    { name: "الإشعارات", icon: <FaPills />, href: "#" },
+    { name: "عنّا", icon: <FaInfo />, href: "//" },
+    { name: "الإشعارات", icon: <FaBell />, href: "/" },
   ];
 
   return (
     <motion.nav
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`${
+      className={`flex ${
         mobile
-          ? "flex flex-col items-center gap-4 py-4 text-lg"
-          : "flex items-center gap-6 text-lightly dark:text-gray-300"
+          ? "flex-col items-center gap-4 py-4 text-lg"
+          : "items-center gap-4 text-lightly dark:text-gray-300"
       }`}
     >
-      {navLinks.map((link, i) => (
-        <Tooltip key={i} message={link.name} side="bottom">
-          <Link
-            href={link.href}
-            onClick={onLinkClick}
-            className={`flex flex-1 text-xl border-b-3 border-b-main items-center gap-2 hover:text-main transition-colors ${
-              mobile && "text-gray-700 dark:text-gray-200"
-            }`}
-          >
-            {link.icon}
-          </Link>
-        </Tooltip>
-      ))}
+      {navLinks.map(({ name, icon, href }) => {
+        const isActive = pathname === href;
+
+        return (
+          <Tooltip key={href} message={name}>
+            <Link
+              href={href}
+              onClick={onLinkClick}
+              className={`relative h-full flex items-center gap-2 px-5 text-xl transition-colors rounded-lg
+                ${
+                  isActive
+                    ? "text-main"
+                    : "hover:bg-gray-300 dark:hover:bg-gray-700"
+                }`}
+            >
+              {icon}
+
+              {/* الخط السفلي للصفحة الحالية */}
+              {!mobile && isActive && (
+                <span className="absolute bottom-0 left-0 w-full border-b-[3px] border-b-main" />
+              )}
+            </Link>
+          </Tooltip>
+        );
+      })}
     </motion.nav>
   );
 }

@@ -10,7 +10,7 @@ export default function Homelayout({ children }: { children: ReactNode }) {
   return (
     <>
       <Header />
-      <main>{children}</main>
+      <main className="min-h-screen bg-bg">{children}</main>
     </>
   );
 }

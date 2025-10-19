@@ -11,10 +11,14 @@ import { ReactNode } from "react";
 type TooltipProps = {
   children: ReactNode;
   message: string;
-  side: "top" | "right" | "bottom" | "left";
+  side?: "top" | "right" | "bottom" | "left";
 };
 
-export default function Tooltip({ children, message, side }: TooltipProps) {
+export default function Tooltip({
+  children,
+  message,
+  side = "bottom",
+}: TooltipProps) {
   return (
     <Provider delayDuration={300}>
       <Root>
@@ -23,8 +27,8 @@ export default function Tooltip({ children, message, side }: TooltipProps) {
           <Content
             side={side}
             align="center"
-            sideOffset={20}
-            className="z-4 bg-gray-800 dark:bg-gray-700 text-white dark:text-gray-100 
+            sideOffset={5}
+            className="z-3 bg-gray-800 dark:bg-gray-700 text-white dark:text-gray-100 
                        text-sm px-3 py-1.5 rounded-md shadow-lg select-none 
                        animate-fadeIn"
           >

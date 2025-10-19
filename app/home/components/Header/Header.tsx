@@ -11,8 +11,8 @@ export default function Header() {
 
   return (
     <header
-      className={`w-full px-4 md:px-6 py-3 flex items-center justify-between shadow-md sticky top-0 z-2 
-      bg-bg text-darkly dark:bg-darkly dark:text-white transition-colors duration-300`}
+      className="w-full px-4 md:px-6 flex items-center justify-between shadow-md sticky top-0 z-2
+      bg-bg text-darkly dark:bg-darkly dark:text-white dark:border-b dark:border-b-gray-600 transition-colors duration-300"
     >
       {/* Logo */}
       <motion.div
@@ -24,7 +24,7 @@ export default function Header() {
       </motion.div>
 
       {/* Desktop Navigation */}
-      <div className="hidden md:flex">
+      <div className="hidden h-[49px] md:flex">
         <Navigation />
       </div>
 
@@ -45,7 +45,7 @@ export default function Header() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0 }}
-          className="absolute top-16 left-0 w-full bg-white dark:bg-gray-900 shadow-lg border-t border-gray-200 dark:border-gray-700 md:hidden z-2"
+          className="absolute top-12 left-0 w-full bg-white dark:bg-gray-900 shadow-lg border-t border-gray-200 dark:border-gray-700 md:hidden z-2"
         >
           <Navigation mobile onLinkClick={() => setMenuOpen(false)} />
         </motion.div>

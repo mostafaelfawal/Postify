@@ -8,7 +8,7 @@ import Loading from "./loading";
 export default function Main() {
   const router = useRouter();
   const [user, loading] = useAuthState(auth);
-
+  
   useEffect(() => {
     if (!loading) {
       if (user) {

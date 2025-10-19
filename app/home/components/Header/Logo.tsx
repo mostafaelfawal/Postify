@@ -7,13 +7,14 @@ export default function Logo() {
       <Image
         src="/icon.png"
         alt="logo"
-        width={45}
-        height={45}
-        className="rounded-full"
+        width={50}
+        height={50}
+        className="rounded-full cursor-pointer"
         priority
+        onClick={() => location.href = "/home"}
       />
       {/* Search */}
-      <div className="hidden sm:block relative">
+      <div className="hidden lg:block relative">
         <FaSearch className="absolute left-2 top-2 text-gray-400" />
         <input
           type="text"
@@ -25,7 +26,7 @@ export default function Logo() {
       </div>
 
       {/* Mobile search icon */}
-      <button className="sm:hidden p-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition">
+      <button className="lg:hidden p-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition">
         <FaSearch />
       </button>
     </div>

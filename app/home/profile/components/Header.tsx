@@ -1,26 +1,30 @@
 "use client";
 import Tooltip from "@/app/components/Tooltip";
+import { RootState } from "@/app/store/store";
 import Image from "next/image";
 import { AiFillLike } from "react-icons/ai";
 import { FaPen } from "react-icons/fa";
 import { MdArticle } from "react-icons/md";
+import { useSelector } from "react-redux";
 
 export default function Header() {
+  const user = useSelector((state: RootState) => state.user)
+
   return (
-    <header className="relative w-full rounded-2xl overflow-hidden shadow-sm border border-lightly/40 dark:border-darkly/30 bg-bg/80 dark:bg-darkly/40 backdrop-blur-sm mb-10">
+    <header className="relative w-full rounded-b-2xl overflow-hidden shadow-sm border-b border-lightly/40 dark:border-lightly bg-bg/80 dark:bg-darkly/40 mb-10">
       {/* ===== Cover Photo ===== */}
-      <div className="relative h-56 sm:h-72 w-full">
+      <div className="relative h-40 sm:h-72 w-full">
         <Image
-          src="/Userbackground.jpg"
+          src={user.coverImage || "/default-cover.jpg"}
           alt="cover photo"
           fill
-          className="object-cover brightness-90"
+          className="object-cover brightness-90 rounded-b-xl"
         />
         {/* ===== Avatar ===== */}
         <div className="absolute -bottom-14 left-1/2 -translate-x-1/2 flex flex-col items-center">
           <div className="relative size-28 sm:size-32 rounded-full border-[4px] border-bg dark:border-gray-700 shadow-md overflow-hidden">
             <Image
-              src="/7.png"
+              src={user.avatar || "/default_avatar.png"}
               alt="avatar"
               fill
               className="object-cover"
@@ -40,11 +44,13 @@ export default function Header() {
       <div className="pt-20 pb-8 px-6 sm:px-10 text-center space-y-4">
         {/* Name */}
         <div className="bg-clip-text text-transparent bg-gradient-to-r from-main via-main-dark to-main-light">
-          <h1 className="font-bold text-2xl sm:text-3xl">مصطفى حمدي</h1>
+          <h1 className="font-bold text-2xl sm:text-3xl">
+            {user.userName}
+          </h1>
         </div>
         {/* Email */}
         <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">
-          armostafa982@gmail.com
+          {user.email}
         </p>
 
         {/* ===== Stats ===== */}
@@ -56,7 +62,7 @@ export default function Header() {
             </div>
             <div>
               <p className="text-xl font-bold text-main-dark dark:text-main/90">
-                123
+                {user.likesCount}
               </p>
               <p className="text-sm text-lightly">إعجاب</p>
             </div>
@@ -69,7 +75,7 @@ export default function Header() {
             </div>
             <div>
               <p className="text-xl font-bold text-green-700 dark:text-green-400">
-                10
+                {user.postsCount}
               </p>
               <p className="text-sm text-lightly">منشور</p>
             </div>

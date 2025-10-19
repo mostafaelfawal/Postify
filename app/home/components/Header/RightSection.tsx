@@ -1,12 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FaMoon, FaSignOutAlt, FaSun } from "react-icons/fa";
+import { FaDove, FaMoon, FaSignOutAlt, FaSun } from "react-icons/fa";
 import toggleTheme from "../../utils/toggleTheme";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { logout } from "../../utils/logout";
 import Modal from "@/app/components/Modal";
+import Tooltip from "@/app/components/Tooltip";
 
 export default function RightSection() {
   const [theme, setTheme] = useState(false);
@@ -25,36 +26,43 @@ export default function RightSection() {
       animate={{ opacity: 1, x: 0 }}
       className="flex items-center gap-2 md:gap-3"
     >
-      {/* Theme Toggle */}
-      <motion.button
-        onClick={() => toggleTheme(theme, setTheme)}
-        className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 
+      {/* Zaajel Chat app */}
+      <Tooltip message="زاجل">
+        <button
+          className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 
                      hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
-        whileTap={{ rotate: 180, scale: 0.8 }}
-      >
-        {theme ? <FaSun /> : <FaMoon />}
-      </motion.button>
-
+        >
+          <FaDove size={18} />
+        </button>
+      </Tooltip>
+      {/* Theme Toggle */}
+      <Tooltip message="تبديل السمه" >
+        <motion.button
+          onClick={() => toggleTheme(theme, setTheme)}
+          className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 
+                     hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+          whileTap={{ rotate: 180, scale: 0.8 }}
+        >
+          {theme ? <FaSun /> : <FaMoon />}
+        </motion.button>
+      </Tooltip>
       {/* Logout */}
-      <motion.button
-        onClick={() => setModal(true)}
-        className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 
+      <Tooltip message="تسجيل الخروج">
+        <button
+          onClick={() => setModal(true)}
+          className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 
                      hover:bg-red-400 dark:hover:bg-red-600 transition-colors flex items-center justify-center"
-      >
-        <FaSignOutAlt size={18} />
-      </motion.button>
+        >
+          <FaSignOutAlt size={18} />
+        </button>
+      </Tooltip>
       {showModal && (
-        <Modal closeModal={() => setModal(false)}>
+        <Modal head="تأكيد الخروج" isOpen={showModal} closeModal={() => setModal(false)}>
           <div className="text-center">
             {/* الأيقونة */}
             <div className="mx-auto mb-4 w-16 h-16 bg-gradient-to-br from-red-300 to-red-800 rounded-full flex items-center justify-center shadow-md">
               <FaSignOutAlt className="text-white text-xl" />
             </div>
-
-            {/* العنوان */}
-            <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-              تأكيد الخروج
-            </h3>
 
             {/* النص */}
             <p className="text-gray-600 dark:text-gray-400 mb-6 text-base leading-relaxed">

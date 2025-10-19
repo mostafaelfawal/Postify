@@ -13,3 +13,47 @@
 button {
   cursor: pointer;
 }
+
+input,
+textarea {
+  caret-color: var(--color-main);
+}
+
+/* ستايل الـ scrollbar لكل العناصر */
+* {
+  scrollbar-width: thin; /* للفايرفوكس */
+  scrollbar-color: var(--color-main) #fff;
+}
+
+.dark {
+  scrollbar-color: var(--color-main) var(--color-darkly);
+}
+
+/* لدعم المتصفحات browsers (Chrome, Edge, Safari) */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--color-lightly);
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--color-main);
+  border-radius: 10px;
+  border: 2px solid var(--color-lightly);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--color-main-dark);
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background: var(--color-main-dark);
+}
+
+*::-webkit-scrollbar-corner {
+  background: var(--color-lightly);
+}

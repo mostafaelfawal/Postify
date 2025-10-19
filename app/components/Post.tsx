@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { FaComment, FaShare, FaThumbsUp } from "react-icons/fa";
 import { FaEarthAsia } from "react-icons/fa6";
+import handleLikeClick from "../utils/handleLikeClick";
 
 export default function Post() {
   const [isLike, setLike] = useState(false);
@@ -14,7 +15,12 @@ export default function Post() {
       {/* ===== Header ===== */}
       <div className="flex items-center gap-3 cursor-pointer hover:opacity-90 transition">
         <div className="size-10 rounded-full overflow-hidden">
-          <Image src="/7.png" alt="avatar" width={100} height={100} />
+          <Image
+            src="/default_avatar.png"
+            alt="avatar"
+            width={100}
+            height={100}
+          />
         </div>
         <div>
           <p className="font-semibold hover:underline">مصطفى حمدي</p>
@@ -80,7 +86,10 @@ export default function Post() {
               scale: 0.9,
               transition: { duration: 0.03, ease: "easeOut" },
             }}
-            onClick={() => setLike(!isLike)}
+            onClick={() => {
+              handleLikeClick();
+              setLike(!isLike);
+            }}
             className={`${
               isLike
                 ? "text-main font-semibold"
