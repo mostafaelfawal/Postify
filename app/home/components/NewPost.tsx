@@ -22,20 +22,22 @@ export default function NewPost() {
         className="flex gap-3 items-center p-5 max-w-xl mx-auto bg-white dark:bg-gray-900 rounded-2xl shadow-md border border-gray-100 dark:border-gray-800 overflow-hidden transition-all duration-300"
       >
         {/* صورة المستخدم */}
-        <Link
-          href="/home/profile"
-          className="hover:opacity-90 transition-opacity min-w-11 h-11 relative overflow-hidden rounded-full border-2 border-main"
-        >
-          <Image
-            src={user.avatar || "/default_avatar.png"}
-            alt="avatar"
-            fill
-            className="object-cover"
-          />
-        </Link>
+        <Tooltip message="الملف الشخصي">
+          <Link
+            href="/home/profile"
+            className="hover:opacity-90 transition-opacity min-w-11 h-11 relative overflow-hidden rounded-full border-2 border-main"
+          >
+            <Image
+              src={user.avatar || "/default_avatar.png"}
+              alt="avatar"
+              fill
+              className="object-cover"
+            />
+          </Link>
+        </Tooltip>
 
         {/* زر فتح المودال */}
-        <Tooltip message="انشأ منشور" >
+        <Tooltip message="انشأ منشور">
           <button
             onClick={() => setModal(true)}
             className="text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 w-full rounded-full text-right p-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
