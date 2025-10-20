@@ -17,6 +17,7 @@ export default function NewPost() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [content, setContent] = useState<string>("");
+  const [sendProgress, setSendProgress] = useState<boolean>(false);
   const user = useSelector((state: RootState) => state.user);
 
   // اختيار صورة
@@ -42,6 +43,7 @@ export default function NewPost() {
       }
 
       toast.loading("جاري النشر...");
+      setSendProgress(true);
 
       const newPostId = await createPost({
         content,
@@ -50,6 +52,7 @@ export default function NewPost() {
       });
 
       toast.dismiss();
+      setSendProgress(false);
       toast.success("تم النشر بنجاح 🎉");
 
       console.log("تم إنشاء المنشور:", newPostId);
@@ -59,17 +62,18 @@ export default function NewPost() {
     } catch (err) {
       console.error(err);
       toast.dismiss();
+      setSendProgress(false);
       toast.error("حدث خطأ أثناء النشر 😞");
     }
   };
 
   return (
-    <section className="min-h-screen bg-gray-50 dark:bg-[#0d0d0d] py-8 px-4 transition-colors duration-300">
+    <section className="bg-gray-50 dark:bg-[#0d0d0d] py-8 px-4 transition-colors duration-300">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="flex gap-3 items-center p-5 max-w-xl mx-auto bg-white dark:bg-gray-900 rounded-2xl shadow-md border border-gray-100 dark:border-gray-800 overflow-hidden transition-all duration-300"
+        className=" flex gap-3 items-center p-5 mx-auto bg-white dark:bg-gray-900 rounded-2xl shadow-md border border-gray-100 dark:border-gray-800 overflow-hidden transition-all duration-300"
       >
         {/* صورة المستخدم */}
         <Tooltip message="الملف الشخصي">
@@ -155,8 +159,9 @@ export default function NewPost() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => handlePost}
-                className="flex items-center gap-2 px-6 py-2 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 font-medium shadow-sm mt-4"
+                onClick={handlePost}
+                disabled={sendProgress}
+                className="flex items-center gap-2 px-6 py-2 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 dark:disabled:bg-blue-600 disabled:bg-blue-600 text-white rounded-lg transition-colors duration-200 font-medium shadow-sm mt-4"
               >
                 <FiSend className="w-4 h-4" />
                 نشر

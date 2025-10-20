@@ -19,7 +19,7 @@ export default async function UserToFirebase(
     });
 
     // بعد الحفظ بنجاح
-    router.replace("./home");
+    router.replace("/home");
   } catch (error) {
     console.error("Error adding user:", error);
   }

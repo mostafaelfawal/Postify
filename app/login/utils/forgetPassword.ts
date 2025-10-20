@@ -3,7 +3,6 @@ import { sendPasswordResetEmail } from "firebase/auth";
 import toast from "react-hot-toast";
 
 export default async function forgetPassword(email: string) {
-  
   try {
     await sendPasswordResetEmail(auth, email);
     toast.success(

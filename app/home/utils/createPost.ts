@@ -1,6 +1,6 @@
-import { db, storage } from "@/app/firebase";
-import { addDoc, collection, doc, serverTimestamp } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { db } from "@/app/firebase";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { uploadImageToCloudinary } from "../utils/uploadImage";
 
 export type PostData = {
   content: string;
@@ -12,17 +12,12 @@ export async function createPost({ content, authorId, imageFile }: PostData) {
   try {
     let imageUrl: string | null = null;
 
-    // 🔹 ارفع الصورة إن وجدت
+    // 🔹 ارفع الصورة إلى Cloudinary إن وجدت
     if (imageFile) {
-      const imageRef = ref(
-        storage,
-        `posts/${authorId}/${Date.now()}_${imageFile.name}`
-      );
-      await uploadBytes(imageRef, imageFile);
-      imageUrl = await getDownloadURL(imageRef);
+      imageUrl = await uploadImageToCloudinary(imageFile);
     }
 
-    // 🔹 أنشئ مستند المنشور داخل "posts"
+    // 🔹 أنشئ المنشور في Firestore
     const postRef = await addDoc(collection(db, "posts"), {
       content,
       imageUrl,
@@ -31,11 +26,6 @@ export async function createPost({ content, authorId, imageFile }: PostData) {
       likesCount: 0,
       commentsCount: 0,
       sharesCount: 0,
-    });
-
-    // 🔹 إضافة مجموعة فرعية "likedBy" فارغة (تُستخدم لاحقاً)
-    await addDoc(collection(doc(db, "posts", postRef.id), "likedBy"), {
-      initialized: true, // مجرد placeholder حتى تنشأ المجموعة
     });
 
     return postRef.id;

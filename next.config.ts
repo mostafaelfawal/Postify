@@ -1,9 +1,8 @@
-import { hostname } from "os";
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
     remotePatterns: [
+      // 🟢 صور حسابات Google
       {
         protocol: "https",
         hostname: "lh3.googleusercontent.com",
@@ -15,15 +14,13 @@ const nextConfig = {
         hostname: "**.googleusercontent.com",
         pathname: "**",
       },
+
+      // 🟢 لل Cloudinary
       {
         protocol: "https",
-        hostname: "**.ui-avatars.com",
-        pathname: "**",
-      },
-      {
-        protocol: "https",
-        hostname: "ui-avatars.com",
-        pathname: "**",
+        hostname: "res.cloudinary.com",
+        port: "",
+        pathname: "/diicvmo8x/**",
       },
     ],
   },
