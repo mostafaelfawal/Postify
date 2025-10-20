@@ -21,6 +21,7 @@ type PostType = {
   commentsCount: number;
   sharesCount: number;
 };
+
 export default function Post({
   postId,
   content,
@@ -66,7 +67,7 @@ export default function Post({
           />
         </div>
         <div>
-          <p className="font-semibold hover:underline">{user.userName}</p>
+          <p className="font-semibold hover:underline text-main">{user.userName}</p>
           <p className="text-lightly flex items-center gap-2 text-sm">
             {createdAt} • <FaEarthAsia className="text-xs" />
           </p>

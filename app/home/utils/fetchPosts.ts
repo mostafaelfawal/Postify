@@ -4,30 +4,41 @@ import {
   getDocs,
   orderBy,
   limit,
-  startAfter,
   query,
-  DocumentSnapshot,
+  startAfter,
+  DocumentData,
+  QueryDocumentSnapshot,
 } from "firebase/firestore";
+import { PostType } from "../types/PostType";
 
-export async function fetchPosts(lastDoc: DocumentSnapshot | null = null) {
+export const fetchPosts = async (lastDoc?: QueryDocumentSnapshot<DocumentData>) => {
   const postsRef = collection(db, "posts");
-  const q = lastDoc
-    ? query(
-        postsRef,
-        orderBy("createdAt", "desc"),
-        startAfter(lastDoc),
-        limit(5)
-      )
-    : query(postsRef, orderBy("createdAt", "desc"), limit(5));
+
+  // الاستعلام مع ترتيب زمني وحد أقصى
+  let q = query(postsRef, orderBy("createdAt", "desc"), limit(5));
+
+  if (lastDoc) {
+    q = query(postsRef, orderBy("createdAt", "desc"), startAfter(lastDoc), limit(5));
+  }
 
   const snapshot = await getDocs(q);
 
-  const posts = snapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
+  // تحويل بيانات Firebase إلى PostType[]
+  const posts: PostType[] = snapshot.docs.map((doc) => {
+    const data = doc.data();
 
-  const lastVisible = snapshot.docs[snapshot.docs.length - 1] || null;
+    return {
+      id: doc.id,
+      content: data.content || "",
+      imageUrl: data.imageUrl || "",
+      authorId: data.authorId || "",
+      createdAt: data.createdAt || { seconds: Date.now() / 1000, nanoseconds: 0 },
+      likesCount: data.likesCount || 0,
+      commentsCount: data.commentsCount || 0,
+      sharesCount: data.sharesCount || 0,
+    };
+  });
 
+  const lastVisible = snapshot.docs[snapshot.docs.length - 1];
   return { posts, lastVisible };
-}
+};

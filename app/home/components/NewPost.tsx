@@ -68,7 +68,7 @@ export default function NewPost() {
   };
 
   return (
-    <section className="bg-gray-50 dark:bg-[#0d0d0d] py-8 px-4 transition-colors duration-300">
+    <section className="py-8 px-4 transition-colors duration-300">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

@@ -8,12 +8,16 @@ import { auth } from "../firebase";
 import { fetchPosts } from "./utils/fetchPosts";
 import Post from "../components/Post";
 import NewPost from "./components/NewPost";
+import { PostType } from "./types/PostType";
+import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 
 export default function Home() {
   const dispatch = useDispatch<AppDispatch>();
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<PostType[]>([]);
   const [loading, setLoading] = useState(true);
-  const [lastDoc, setLastDoc] = useState<any>(null);
+  const [lastDoc, setLastDoc] =
+    useState<QueryDocumentSnapshot<DocumentData> | null>(null);
+
   const [loadingMore, setLoadingMore] = useState(false);
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
