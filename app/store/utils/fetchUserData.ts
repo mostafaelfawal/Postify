@@ -1,17 +1,16 @@
-import { auth, db } from "@/app/firebase";
-import { UserData } from "@/app/home/profile/types/UserData";
+import { db } from "@/app/firebase";
+import { UserData } from "@/app/home/profile/[id]/types/UserData";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { doc, getDoc } from "firebase/firestore";
 import toast from "react-hot-toast";
 
 export const fetchUserData = createAsyncThunk<
   UserData,
-  void,
+  string, // الآن يأخذ uid كباراميتر
   { rejectValue: string }
->("user/fetchUserData", async (_, { rejectWithValue }) => {
+>("user/fetchUserData", async (uid, { rejectWithValue }) => {
   try {
-    const uid = auth.currentUser?.uid;
-    if (!uid) throw new Error("لم يتم تسجيل الدخول");
+    if (!uid) throw new Error("لم يتم تقديم معرف المستخدم");
 
     const userRef = doc(db, "users", uid);
     const userSnap = await getDoc(userRef);

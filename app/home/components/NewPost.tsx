@@ -41,7 +41,7 @@ export default function NewPost() {
         toast.error("المنشور فارغ!");
         return;
       }
-
+      setModal(false);
       toast.loading("جاري النشر...");
       setSendProgress(true);
 

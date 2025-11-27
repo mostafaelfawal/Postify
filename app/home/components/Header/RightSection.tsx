@@ -28,15 +28,17 @@ export default function RightSection() {
     >
       {/* Zaajel Chat app */}
       <Tooltip message="زاجل">
-        <button
+        <a
+          href="https://zaajel.vercel.app/"
+          target="_blank"
           className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 
                      hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
         >
           <FaDove size={18} />
-        </button>
+        </a>
       </Tooltip>
       {/* Theme Toggle */}
-      <Tooltip message="تبديل السمه" >
+      <Tooltip message="تبديل السمه">
         <motion.button
           onClick={() => toggleTheme(theme, setTheme)}
           className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 
@@ -57,7 +59,11 @@ export default function RightSection() {
         </button>
       </Tooltip>
       {showModal && (
-        <Modal head="تأكيد الخروج" isOpen={showModal} closeModal={() => setModal(false)}>
+        <Modal
+          head="تأكيد الخروج"
+          isOpen={showModal}
+          closeModal={() => setModal(false)}
+        >
           <div className="text-center">
             {/* الأيقونة */}
             <div className="mx-auto mb-4 w-16 h-16 bg-gradient-to-br from-red-300 to-red-800 rounded-full flex items-center justify-center shadow-md">

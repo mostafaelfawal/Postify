@@ -24,7 +24,7 @@ export default function Home() {
   // تحميل المستخدم
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) dispatch(fetchUserData());
+      if (user) dispatch(fetchUserData(user.uid));
     });
     return () => unsubscribe();
   }, [dispatch]);
@@ -81,6 +81,9 @@ export default function Home() {
             likesCount={post.likesCount || 0}
             commentsCount={post.commentsCount || 0}
             sharesCount={post.sharesCount || 0}
+            authorId={post.authorId}
+            authorName={post.authorName}
+            authorAvatar={post.authorAvatar}
           />
         ))
       )}

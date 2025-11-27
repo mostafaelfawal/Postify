@@ -1,5 +1,6 @@
 "use client";
 import Tooltip from "@/app/components/Tooltip";
+import { auth } from "@/app/firebase";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -21,7 +22,7 @@ export default function Navigation({
     {
       name: "أنا",
       icon: <FaUser />,
-      href: `/home/profile`,
+      href: `/home/profile/${auth.currentUser?.uid}`,
     },
     { name: "عنّا", icon: <FaInfo />, href: "//" },
     { name: "الإشعارات", icon: <FaBell />, href: "/" },

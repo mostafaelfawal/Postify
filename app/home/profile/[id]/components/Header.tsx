@@ -1,14 +1,33 @@
 "use client";
 import Tooltip from "@/app/components/Tooltip";
-import { RootState } from "@/app/store/store";
+import { db } from "@/app/firebase";
+import { doc, getDoc } from "firebase/firestore";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { AiFillLike } from "react-icons/ai";
 import { FaPen } from "react-icons/fa";
 import { MdArticle } from "react-icons/md";
-import { useSelector } from "react-redux";
+import { UserData } from "../types/UserData";
 
-export default function Header() {
-  const user = useSelector((state: RootState) => state.user)
+export default function Header({ id }: { id: string }) {
+  const [user, setUser] = useState<UserData>({
+    userName: "PostiUser",
+    email: "example",
+    avatar: "",
+    coverImage: "",
+    postsCount: 0,
+    likesCount: 0,
+  });
+  useEffect(() => {
+    const getUserData = async () => {
+      const userRef = doc(db, "users", id);
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        setUser(userSnap.data() as UserData);
+      }
+    };
+    getUserData();
+  }, [id]);
 
   return (
     <header className="relative w-full rounded-b-2xl overflow-hidden shadow-sm border-b border-lightly/40 dark:border-lightly bg-bg/80 dark:bg-darkly/40 mb-10">
@@ -44,9 +63,7 @@ export default function Header() {
       <div className="pt-20 pb-8 px-6 sm:px-10 text-center space-y-4">
         {/* Name */}
         <div className="bg-clip-text text-transparent bg-gradient-to-r from-main via-main-dark to-main-light">
-          <h1 className="font-bold text-2xl sm:text-3xl">
-            {user.userName}
-          </h1>
+          <h1 className="font-bold text-2xl sm:text-3xl">{user.userName}</h1>
         </div>
         {/* Email */}
         <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">

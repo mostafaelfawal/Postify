@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { UserData } from "../home/profile/types/UserData";
+import { UserData } from "../home/profile/[id]/types/UserData";
 import { fetchUserData } from "./utils/fetchUserData";
 
 const initialState: UserData & { loading: boolean } = {

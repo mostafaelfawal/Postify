@@ -7,4 +7,8 @@ export interface PostType {
   likesCount?: number;
   commentsCount?: number;
   sharesCount?: number;
+
+  // بيانات الناشر
+  authorName?: string;
+  authorAvatar?: string;
 }

@@ -1,5 +1,12 @@
 import { db } from "@/app/firebase";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  serverTimestamp,
+  doc,
+  updateDoc,
+  increment,
+} from "firebase/firestore";
 import { uploadImageToCloudinary } from "../utils/uploadImage";
 
 export type PostData = {
@@ -27,6 +34,14 @@ export async function createPost({ content, authorId, imageFile }: PostData) {
       commentsCount: 0,
       sharesCount: 0,
     });
+
+    // 🔹 زود postsCount للـ user
+    if (authorId) {
+      const userRef = doc(db, "users", authorId);
+      await updateDoc(userRef, {
+        postsCount: increment(1),
+      });
+    }
 
     return postRef.id;
   } catch (error) {

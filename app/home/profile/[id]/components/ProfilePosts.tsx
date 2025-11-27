@@ -4,9 +4,13 @@ import { useEffect, useState } from "react";
 import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 import { db, auth } from "@/app/firebase";
 import Post from "@/app/components/Post";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store/store";
 
 type PostData = {
   id: string;
+  authorId: string;
+
   content: string;
   imageUrl?: string | null;
   createdAt?: { seconds: number; nanoseconds: number };
@@ -15,10 +19,11 @@ type PostData = {
   sharesCount: number;
 };
 
-export default function ProfilePosts() {
+export default function ProfilePosts({ id }: { id: string }) {
   const [posts, setPosts] = useState<PostData[]>([]);
   const [loading, setLoading] = useState(true);
-  const [userId] = useState(auth.currentUser?.uid);
+  const [userId] = useState(id);
+  const user = useSelector((state: RootState) => state.user);
 
   // ✅ تحميل المنشورات الخاصة بالمستخدم
   useEffect(() => {
@@ -65,9 +70,12 @@ export default function ProfilePosts() {
           imageUrl={post.imageUrl}
           createdAt={
             post.createdAt
-              ? new Date(post.createdAt.seconds * 1000).toLocaleString()
+              ? new Date(post.createdAt.seconds * 1000).toLocaleDateString()
               : ""
           }
+          authorId={post.authorId}
+          authorAvatar={user.avatar}
+          authorName={user.userName}
           likesCount={post.likesCount}
           commentsCount={post.commentsCount}
           sharesCount={post.sharesCount}

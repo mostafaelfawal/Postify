@@ -5,12 +5,11 @@ import { motion } from "framer-motion";
 import { FaComment, FaShare, FaThumbsUp } from "react-icons/fa";
 import { FaEarthAsia } from "react-icons/fa6";
 import { handleLikeClick } from "../utils/handleLikeClick";
-import { useSelector } from "react-redux";
-import { RootState } from "../store/store";
 import { auth } from "../firebase";
 import { useEffect } from "react";
 import { db } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
+import Link from "next/link";
 
 type PostType = {
   postId: string;
@@ -20,6 +19,9 @@ type PostType = {
   likesCount: number;
   commentsCount: number;
   sharesCount: number;
+  authorId: string;
+  authorName?: string;
+  authorAvatar?: string;
 };
 
 export default function Post({
@@ -30,11 +32,13 @@ export default function Post({
   likesCount,
   commentsCount,
   sharesCount,
+  authorId,
+  authorName,
+  authorAvatar,
 }: PostType) {
   const [isLike, setLike] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const [likes, setLikes] = useState<number>(likesCount);
-  const user = useSelector((state: RootState) => state.user);
   const [showImage, setShowImage] = useState<boolean>(false);
 
   useEffect(() => {
@@ -57,22 +61,27 @@ export default function Post({
   return (
     <article className="space-y-5 rounded-2xl border border-lightly bg-bg/80 dark:bg-darkly/40 shadow-sm w-full sm:w-[70%] sm:max-w-2xl p-5 transition-all duration-300 hover:shadow-md">
       {/* ===== Header ===== */}
-      <div className="flex items-center gap-3 cursor-pointer hover:opacity-90 transition">
+      <Link
+        href={`/home/profile/${authorId}`}
+        className="flex items-center gap-3 cursor-pointer hover:opacity-90 transition"
+      >
         <div className="size-10 rounded-full overflow-hidden">
           <Image
-            src={user.avatar || "/default_avatar.png"}
+            src={authorAvatar || "/default_avatar.png"}
             alt="avatar"
             width={100}
             height={100}
           />
         </div>
         <div>
-          <p className="font-semibold hover:underline text-main">{user.userName}</p>
+          <p className="font-semibold hover:underline text-main">
+            {authorName}
+          </p>
           <p className="text-lightly flex items-center gap-2 text-sm">
             {createdAt} • <FaEarthAsia className="text-xs" />
           </p>
         </div>
-      </div>
+      </Link>
 
       {/* ===== Post Text ===== */}
       <div className="flex flex-col">
@@ -136,6 +145,7 @@ export default function Post({
                 postId,
                 auth.currentUser?.uid,
                 isLike,
+                authorId,
                 setLike,
                 setLikes
               );
