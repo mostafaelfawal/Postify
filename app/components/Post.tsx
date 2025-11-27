@@ -8,8 +8,9 @@ import { handleLikeClick } from "../utils/handleLikeClick";
 import { auth } from "../firebase";
 import { useEffect } from "react";
 import { db } from "../firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, increment, updateDoc } from "firebase/firestore";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 type PostType = {
   postId: string;
@@ -57,6 +58,19 @@ export default function Post({
 
     checkIfLiked();
   }, [postId, auth.currentUser?.uid]);
+
+  async function handleShareClick(postId: string) {
+    try {
+      const postRef = doc(db, "posts", postId);
+      toast.promise(updateDoc(postRef, { sharesCount: increment(1) }), {
+        loading: "جاري المشاركة...",
+        error: "حدث خطأ أثناء المشاركة.",
+        success: "تمت المشاركة بنجاح!",
+      });
+    } catch (error) {
+      console.error("Error sharing post:", error);
+    }
+  }
 
   return (
     <article className="space-y-5 rounded-2xl border border-lightly bg-bg/80 dark:bg-darkly/40 shadow-sm w-full sm:w-[70%] sm:max-w-2xl p-5 transition-all duration-300 hover:shadow-md">
@@ -170,6 +184,7 @@ export default function Post({
 
           <motion.button
             whileTap={{ scale: 0.9 }}
+            onClick={() => handleShareClick(postId)}
             className="text-darkly dark:text-lightly w-full flex items-center justify-center gap-2 py-2 rounded-md transition-all duration-150 hover:bg-gray-100 dark:hover:bg-lightly/20"
           >
             <FaShare />

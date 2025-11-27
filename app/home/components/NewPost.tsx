@@ -41,29 +41,29 @@ export default function NewPost() {
         toast.error("المنشور فارغ!");
         return;
       }
+
       setModal(false);
-      toast.loading("جاري النشر...");
       setSendProgress(true);
 
-      const newPostId = await createPost({
-        content,
-        authorId: auth.currentUser?.uid,
-        imageFile: selectedImage,
-      });
+      toast.promise(
+        createPost({
+          content,
+          authorId: auth.currentUser?.uid,
+          imageFile: selectedImage,
+        }),
+        {
+          loading: "جاري النشر...",
+          success: "تم النشر بنجاح 🎉",
+          error: "حدث خطأ أثناء النشر 😞",
+        }
+      );
 
-      toast.dismiss();
-      setSendProgress(false);
-      toast.success("تم النشر بنجاح 🎉");
-
-      console.log("تم إنشاء المنشور:", newPostId);
       setContent("");
       removeImage();
-      setModal(false);
-    } catch (err) {
-      console.error(err);
-      toast.dismiss();
+    } catch (error) {
+      console.error(error);
+    } finally {
       setSendProgress(false);
-      toast.error("حدث خطأ أثناء النشر 😞");
     }
   };
 
