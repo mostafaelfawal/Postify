@@ -24,7 +24,11 @@ export default function Navigation({
       icon: <FaUser />,
       href: `/home/profile/${auth.currentUser?.uid}`,
     },
-    { name: "عنّا", icon: <FaInfo />, href: "//" },
+    {
+      name: "عنّا",
+      icon: <FaInfo />,
+      href: "https://mostafa-hamdi-one.vercel.app/",
+    },
     { name: "الإشعارات", icon: <FaBell />, href: "/" },
   ];
 
@@ -45,6 +49,7 @@ export default function Navigation({
           <Tooltip key={href} message={name}>
             <Link
               href={href}
+              target={name === "عنّا" ? "_blank" : "_self"}
               onClick={onLinkClick}
               className={`relative h-full flex items-center gap-2 px-5 text-xl transition-colors rounded-lg
                 ${

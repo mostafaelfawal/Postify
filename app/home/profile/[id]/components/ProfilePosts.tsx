@@ -1,11 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
-import { db, auth } from "@/app/firebase";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  orderBy,
+  doc,
+  getDoc,
+} from "firebase/firestore";
+import { db } from "@/app/firebase";
 import Post from "@/app/components/Post";
-import { useSelector } from "react-redux";
-import { RootState } from "@/app/store/store";
+import { UserData } from "../types/UserData";
 
 type PostData = {
   id: string;
@@ -23,7 +30,13 @@ export default function ProfilePosts({ id }: { id: string }) {
   const [posts, setPosts] = useState<PostData[]>([]);
   const [loading, setLoading] = useState(true);
   const [userId] = useState(id);
-  const user = useSelector((state: RootState) => state.user);
+  const [user, setUser] = useState<UserData>({
+    userName: "",
+    email: "",
+    avatar: "",
+    postsCount: 0,
+    likesCount: 0,
+  });
 
   // ✅ تحميل المنشورات الخاصة بالمستخدم
   useEffect(() => {
@@ -42,6 +55,12 @@ export default function ProfilePosts({ id }: { id: string }) {
           id: doc.id,
           ...doc.data(),
         })) as PostData[];
+
+        const userRef = doc(db, "users", userId);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          setUser(userSnap.data() as UserData);
+        }
 
         setPosts(fetchedPosts);
       } catch (error) {
