@@ -1,4 +1,6 @@
-export const formatDate = (timestamp: any) => {
+import { Timestamp } from "firebase/firestore";
+
+export const formatDate = (timestamp: Timestamp) => {
   return new Date(timestamp?.toDate()).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",

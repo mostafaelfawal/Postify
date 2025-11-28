@@ -18,6 +18,7 @@ import {
   onSnapshot,
   orderBy,
   query,
+  Timestamp,
   updateDoc,
   where,
 } from "firebase/firestore";
@@ -238,7 +239,7 @@ export default function PostPage({
               </div>
               <div className="flex items-center gap-2 text-lightly dark:text-gray-400 mt-2 sm:mt-0">
                 <FaCalendar className="text-main" />
-                <span className="text-sm">{formatDate(post.createdAt)}</span>
+                <span className="text-sm">{formatDate(post.createdAt as Timestamp)}</span>
               </div>
             </div>
 

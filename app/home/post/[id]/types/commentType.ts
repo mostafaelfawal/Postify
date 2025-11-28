@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore";
+
 export interface CommentType {
   id: string;
   postId: string;
@@ -5,7 +7,7 @@ export interface CommentType {
   userName: string;
   userAvatar: string;
   content: string;
-  createdAt: any;
+  createdAt: Timestamp;
   likesCount: number;
   parentId: string | null;
   replies?: CommentType[];
